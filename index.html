@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday 🎁</title>
+
+<style>
+:root{
+  --primary:#ff4757;
+  --gold:#f1c40f;
+}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:radial-gradient(circle,#24243e,#0f0c29);
+  font-family:Segoe UI,Roboto,Arial;
+}
+
+#canvas{
+  position:absolute;
+  inset:0;
+  z-index:1;
+  pointer-events:none;
+}
+
+.container{
+  position:relative;
+  z-index:10;
+  height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.card{
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(15px);
+  border-radius:30px;
+  padding:45px;
+  text-align:center;
+  color:white;
+  box-shadow:0 25px 50px rgba(0,0,0,.6);
+  transition:.8s cubic-bezier(.68,-.55,.27,1.55);
+}
+
+.card.exit{
+  transform:translateY(-120vh) rotate(15deg);
+  opacity:0;
+}
+
+.gift{
+  font-size:80px;
+  animation:swing 2s infinite ease-in-out;
+}
+
+@keyframes swing{
+  0%,100%{transform:rotate(-10deg)}
+  50%{transform:rotate(10deg)}
+}
+
+.btn{
+  margin-top:25px;
+  padding:16px 40px;
+  font-size:1.1rem;
+  border-radius:50px;
+  border:none;
+  background:var(--primary);
+  color:white;
+  cursor:pointer;
+  box-shadow:0 10px 25px rgba(255,71,87,.6);
+}
+
+#wish{
+  position:fixed;
+  inset:0;
+  display:none;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  color:white;
+  z-index:5;
+  text-align:center;
+}
+
+.glow{
+  font-size:clamp(3rem,10vw,6rem);
+  font-weight:900;
+  text-shadow:0 0 25px var(--gold),0 0 60px var(--primary);
+  animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+  0%,100%{transform:scale(1)}
+  50%{transform:scale(1.05)}
+}
+
+.see-more{
+  margin-top:40px;
+  padding:18px 50px;
+  font-size:1.2rem;
+  border-radius:50px;
+  border:none;
+  background:linear-gradient(135deg,#f1c40f,#ff4757);
+  color:white;
+  cursor:pointer;
+  box-shadow:0 20px 40px rgba(0,0,0,.5);
+}
+</style>
+</head>
+
+<body>
+
+<audio id="song" src="birthday.mp3" loop></audio>
+<canvas id="canvas"></canvas>
+
+<div class="container" id="page1">
+  <div class="card" id="card">
+    <div class="gift">🎁</div>
+    <h2>A Special Message</h2>
+    <p>Click below</p>
+    <button class="btn" onclick="openGift()">Open Surprise</button>
+  </div>
+</div>
+
+<div id="wish">
+  <h1 class="glow">HAPPY BIRTHDAY!</h1>
+   <p style="font-size:1.5rem;margin-top:20px">
+   Wishing you a very Happy Birthday! It’s been so nice getting to know you this year. I hope your day is as wonderful as you are. Have a great one!
+  </p>
+  <p style="font-size:1.5rem;margin-top:20px">
+    May your day be filled with magic ✨
+  </p>
+  <div style="font-size:80px;margin-top:20px">🎂 🎈 🥳</div>
+  <button class="see-more" onclick="goNext()">See More ✨</button>
+</div>
+
+<script>
+const canvas=document.getElementById("canvas");
+const ctx=canvas.getContext("2d");
+const colors=["#ff4757","#1e90ff","#2ed573","#f1c40f","#ffffff"];
+let confetti=[];
+
+function resize(){
+  canvas.width=innerWidth;
+  canvas.height=innerHeight;
+}
+resize(); onresize=resize;
+
+class Confetti{
+  constructor(){
+    this.x=Math.random()*canvas.width;
+    this.y=Math.random()*canvas.height-canvas.height;
+    this.s=5+Math.random()*8;
+    this.sp=2+Math.random()*3;
+    this.c=colors[Math.floor(Math.random()*colors.length)];
+  }
+  update(){ this.y+=this.sp; if(this.y>canvas.height) this.y=-20; }
+  draw(){ ctx.fillStyle=this.c; ctx.fillRect(this.x,this.y,this.s,this.s); }
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  confetti.forEach(c=>{c.update();c.draw();});
+  requestAnimationFrame(animate);
+}
+
+function openGift(){
+  document.getElementById("song").play();
+  document.getElementById("card").classList.add("exit");
+  setTimeout(()=>{
+    page1.style.display="none";
+    wish.style.display="flex";
+    for(let i=0;i<150;i++) confetti.push(new Confetti());
+    animate();
+  },700);
+}
+
+function goNext(){
+  location.href="celebration.html";
+}
+</script>
+
+</body>
+</html>

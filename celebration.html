@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Birthday Celebration 🎂</title>
+
+<style>
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  height:100vh;
+  overflow:hidden;
+  background:radial-gradient(circle at top,#ff9a9e,#fad0c4,#fbc2eb);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+}
+
+/* 🎂 BIGGER CAKE */
+.cake{
+  width:380px; /* increased from 300px */
+  z-index:5;
+  animation:float 4s ease-in-out infinite;
+  filter:drop-shadow(0 35px 45px rgba(0,0,0,.45));
+}
+
+@keyframes float{
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-30px) scale(1.05)}
+}
+
+/* Confetti */
+.confetti{
+  position:absolute;
+  width:12px;
+  height:12px;
+  top:-10px;
+  animation:fall linear infinite;
+}
+
+@keyframes fall{
+  to{transform:translateY(110vh) rotate(720deg)}
+}
+
+/* Realistic Balloons */
+.balloon{
+  position:absolute;
+  bottom:-180px;
+  width:80px;
+  height:100px;
+  border-radius:50% 50% 50% 50% / 45% 45% 55% 55%;
+  animation:balloonFloat linear infinite;
+  box-shadow:inset -10px -20px 0 rgba(255,255,255,.25);
+  z-index:3;
+}
+
+.balloon::before{
+  content:'';
+  position:absolute;
+  top:20px;
+  left:18px;
+  width:18px;
+  height:30px;
+  background:rgba(255,255,255,.4);
+  border-radius:50%;
+}
+
+.balloon::after{
+  content:'';
+  position:absolute;
+  bottom:-10px;
+  left:50%;
+  transform:translateX(-50%);
+  width:10px;
+  height:10px;
+  background:inherit;
+  clip-path:polygon(50% 100%,0 0,100% 0);
+}
+
+.string{
+  position:absolute;
+  bottom:-70px;
+  left:50%;
+  width:2px;
+  height:70px;
+  background:rgba(255,255,255,.6);
+}
+
+@keyframes balloonFloat{
+  0%{transform:translateY(0) rotate(0deg)}
+  50%{transform:rotate(3deg)}
+  100%{transform:translateY(-130vh) rotate(-3deg)}
+}
+
+/* Candles */
+.candles{
+  position:absolute;
+  bottom:20px;
+  display:flex;
+  gap:20px;
+  z-index:6;
+}
+
+.candle{
+  width:16px;
+  height:60px;
+  background:linear-gradient(#fff,#ffd1dc);
+  border-radius:5px;
+  position:relative;
+}
+
+.flame{
+  position:absolute;
+  top:-18px;
+  left:50%;
+  transform:translateX(-50%);
+  width:14px;
+  height:20px;
+  background:radial-gradient(circle,#fff700,#ff8c00);
+  border-radius:50%;
+  animation:flicker .15s infinite alternate;
+}
+
+@keyframes flicker{
+  from{transform:translateX(-50%) scale(1);opacity:.9}
+  to{transform:translateX(-50%) scale(1.15);opacity:1}
+}
+</style>
+</head>
+
+<body>
+
+<img src="cake.png" class="cake">
+
+<!-- Music -->
+<audio src="birthday2.mp3" autoplay></audio>
+<audio src="aa.mp3" autoplay loop></audio>
+
+<script>
+/* Confetti */
+for(let i=0;i<160;i++){
+  const c=document.createElement("div");
+  c.className="confetti";
+  c.style.left=Math.random()*100+"vw";
+  c.style.background=`hsl(${Math.random()*360},100%,50%)`;
+  c.style.animationDuration=2+Math.random()*4+"s";
+  document.body.appendChild(c);
+}
+
+/* Balloons */
+const colors=["#ff4757","#f1c40f","#1e90ff","#2ed573","#e056fd"];
+for(let i=0;i<8;i++){
+  const b=document.createElement("div");
+  b.className="balloon";
+  b.style.left=Math.random()*100+"vw";
+  b.style.background=colors[i%colors.length];
+  b.style.animationDuration=8+Math.random()*6+"s";
+
+  const s=document.createElement("div");
+  s.className="string";
+  b.appendChild(s);
+
+  document.body.appendChild(b);
+}
+</script>
+
+<div class="candles">
+  <div class="candle"><span class="flame"></span></div>
+  <div class="candle"><span class="flame"></span></div>
+  <div class="candle"><span class="flame"></span></div>
+  <div class="candle"><span class="flame"></span></div>
+  <div class="candle"><span class="flame"></span></div>
+</div>
+
+</body>
+</html>
